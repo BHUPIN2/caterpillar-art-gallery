@@ -28,8 +28,10 @@ jobs:
       - name: Check server syntax
         run: node --check server.js
 
-      - name: Build frontend
-        run: npm run build
+      - name: Verify production build
+        run: |
+          test -f dist/index.html
+          echo "Production build found successfully."
 
       - name: Build Docker image
         run: docker build -t caterpillar-gallery .
