@@ -80,7 +80,7 @@ function requireAdminAuth(req, res, next) {
     req.adminUser = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired session.', redirect: '/admin/login' });
+    return res.status(401).json({ error: 'Invalid or expired session.', redirect: '/login' });
   }
 }
 
@@ -935,29 +935,17 @@ app.post('/api/admin/blogs/:id/duplicate', (req, res) => {
 // --------------------------------------------------------------------------
 // ADMIN ROUTE PROTECTION GUARD (Server-side 302 Redirects)
 // --------------------------------------------------------------------------
-app.get('/admin/login', (req, res) => {
+app.get('/login', (req, res) => {
   const token = req.cookies._admin_session;
+
   if (token) {
-    try {
-      jwt.verify(token, JWT_SECRET);
-      return res.redirect('/admin');
-    } catch (e) { }
+    return res.redirect('/admin');
   }
+
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.get(/^\/admin(\/.*)?$/, (req, res) => {
-  const token = req.cookies._admin_session;
-  if (!token) {
-    return res.redirect('/admin/login');
-  }
-  try {
-    jwt.verify(token, JWT_SECRET);
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  } catch (err) {
-    res.redirect('/admin/login');
-  }
-});
+
 
 // --------------------------------------------------------------------------
 // STATIC ASSET SERVING
@@ -981,9 +969,10 @@ app.get('/{*path}', (req, res, next) => {
     );
   }
 
-  res.sendFile(distIndex, err => {
+res.sendFile(distIndex, (err) => {
     if (err) next(err);
   });
+
 });
 
 // Final error handler
