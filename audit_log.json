@@ -1,0 +1,11 @@
+[
+  {
+    "timestamp": "2026-07-23T14:40:45.686Z",
+    "action": "LOGIN_SUCCESS",
+    "user": "admin",
+    "ip": "::1",
+    "details": {
+      "rememberMe": true
+    }
+  }
+]
