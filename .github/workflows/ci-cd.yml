@@ -9,7 +9,6 @@ on:
     branches:
       - main
 
-# Required for GitHub Actions OIDC authentication with AWS
 permissions:
   id-token: write
   contents: read
@@ -19,36 +18,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4. Check server syntax
       - name: Check server syntax
         run: node --check server.js
 
-      # 5. Verify production build
       - name: Verify production build
         run: |
           test -f dist/index.html
           echo "Production build found successfully."
 
-      # 6. Build Docker image
       - name: Build Docker image
-        run: docker build -t caterpillar-gallery .
+        run: |
+          docker build -t caterpillar-gallery .
 
-      # 7. Login to Docker Hub
       - name: Login to Docker Hub
         if: github.event_name == 'push'
         uses: docker/login-action@v3
@@ -56,7 +49,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      # 8. Push Docker image to Docker Hub
       - name: Push Docker image
         if: github.event_name == 'push'
         env:
@@ -65,7 +57,6 @@ jobs:
           docker tag caterpillar-gallery "$DOCKER_USERNAME/caterpillar-gallery:latest"
           docker push "$DOCKER_USERNAME/caterpillar-gallery:latest"
 
-      # 9. Authenticate to AWS using GitHub OIDC
       - name: Configure AWS credentials
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v4
@@ -73,7 +64,6 @@ jobs:
           role-to-assume: arn:aws:iam::734320146457:role/GitHubActions-CaterpillarGallery
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # 10. Deploy to ECS
       - name: Deploy to ECS
         if: github.event_name == 'push'
         run: |
