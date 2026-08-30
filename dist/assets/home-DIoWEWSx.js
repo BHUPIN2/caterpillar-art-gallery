@@ -64,8 +64,8 @@ async function render() {
               <span class="hero-subtitle reveal-up" style="display: inline-block; font-size: 0.78rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 0.85rem;">LAKESIDE, POKHARA &bull; NEPAL</span>
               
               <h1 class="reveal-up display-text" style="color: var(--white); font-family: var(--font-heading); line-height: 1.1; margin-bottom: 1.25rem; font-weight: 300; font-size: clamp(2.1rem, 6.5vw, 4.2rem);">
-                Art Inspired by<br>
-                <span style="font-style: italic; font-weight: 400; color: var(--accent);">the Himalayas</span>
+                Art Inspired <br>
+                <span style="font-style: italic; font-weight: 400; color: var(--accent);">by the Himalayas</span>
               </h1>
 
               <p class="reveal-up" style="font-size: 1.05rem; line-height: 1.7; color: var(--gray-200); margin-bottom: 1.85rem; max-width: 520px;">
