@@ -62,9 +62,11 @@ function render() {
           <!-- Navigation Tabs -->
           <div style="display: flex; gap: 0.75rem; margin-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem; overflow-x: auto;">
             <button class="admin-tab-btn active" data-tab="orders-tab" style="background: var(--accent); color: var(--black); border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">📦 Track Orders</button>
+            <button class="admin-tab-btn" data-tab="messages-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">📬 Messages</button>
+            <button class="admin-tab-btn" data-tab="workshops-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">🎨 Workshop Bookings</button>
             <button class="admin-tab-btn" data-tab="blogs-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">✍️ Blog Posts & Editor</button>
-            <button class="admin-tab-btn" data-tab="add-shop-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">🛒 Add Shop Item</button>
-            <button class="admin-tab-btn" data-tab="add-portfolio-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">🖼️ Add Portfolio Item</button>
+            <button class="admin-tab-btn" data-tab="add-shop-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">🛒 Shop Items</button>
+            <button class="admin-tab-btn" data-tab="add-portfolio-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">🖼️ Portfolio Items</button>
             <button class="admin-tab-btn" data-tab="audit-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">📋 Audit Logs</button>
             <button class="admin-tab-btn" data-tab="settings-tab" style="background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;">⚙️ Security Settings</button>
           </div>
@@ -182,106 +184,177 @@ function render() {
             </div>
           </div>
 
-          <!-- TAB 3: ADD SHOP ITEM -->
+          <!-- TAB 3: SHOP PRODUCTS -->
           <div id="add-shop-tab" class="admin-tab-content" style="display: none;">
-            <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 2.5rem; max-width: 800px; margin: 0 auto;">
-              <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 300; margin-bottom: 0.5rem;">Add New Shop Item</h2>
-              <form id="addShopForm" style="display: flex; flex-direction: column; gap: 1.25rem;">
-                <div class="form-group">
-                  <label class="form-label">Item Title</label>
-                  <input type="text" name="title" required placeholder="e.g. Annapurna Morning Light" class="form-input" />
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-                  <div class="form-group">
-                    <label class="form-label">Selling Price ($)</label>
-                    <input type="number" name="price" required step="0.01" placeholder="250.00" class="form-input" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Original Price ($)</label>
-                    <input type="number" name="originalPrice" step="0.01" placeholder="300.00" class="form-input" />
-                  </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-                  <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select name="category" class="form-input">
-                      <option value="original">Original Painting</option>
-                      <option value="print">Fine Art Print</option>
-                      <option value="experience">Trekking & Art Pass</option>
-                      <option value="commission">Custom Commission</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Medium & Material</label>
-                    <input type="text" name="medium" placeholder="Oil on Canvas" class="form-input" />
-                  </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-                  <div class="form-group">
-                    <label class="form-label">Dimensions / Size</label>
-                    <input type="text" name="dimensions" placeholder="24&quot; x 36&quot;" class="form-input" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Image URL / Path</label>
-                    <input type="text" name="image" required value="/photos/paintings-of-nepal-1.jpg" class="form-input" />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Item Description</label>
-                  <textarea name="description" rows="3" class="form-textarea"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="padding: 1rem; font-weight: 600;">+ Save Shop Item</button>
-              </form>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--gray-400); font-size: 0.8rem; text-transform: uppercase;">Total Products</span>
+                <h2 id="statTotalShop" style="font-size: 2rem; margin-top: 0.5rem; color: #fff;">0</h2>
+              </div>
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: #28a745; font-size: 0.8rem; text-transform: uppercase;">In Stock</span>
+                <h2 id="statInStockShop" style="font-size: 2rem; margin-top: 0.5rem; color: #28a745;">0</h2>
+              </div>
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: #f5a623; font-size: 0.8rem; text-transform: uppercase;">On Sale</span>
+                <h2 id="statSaleShop" style="font-size: 2rem; margin-top: 0.5rem; color: #f5a623;">0</h2>
+              </div>
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase;">Categories</span>
+                <h2 id="statCategoriesShop" style="font-size: 2rem; margin-top: 0.5rem; color: var(--accent);">0</h2>
+              </div>
+            </div>
+
+            <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 1.75rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 300;">Shop Products Catalog</h3>
+                <button id="openNewShopModalBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-weight: 600;">🛒 + Add New Shop Product</button>
+              </div>
+
+              <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;">
+                <input type="text" id="shopSearchInput" placeholder="Search products by title..." style="flex: 1; min-width: 240px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1rem; border-radius: var(--radius-pill); font-size: 0.88rem;" />
+                <select id="shopCategoryFilter" style="background: #1a1a1a; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1rem; border-radius: var(--radius-pill); font-size: 0.88rem; cursor: pointer;">
+                  <option value="all">All Categories</option>
+                  <option value="landscape">Landscape</option>
+                  <option value="portrait">Portrait</option>
+                  <option value="abstract">Abstract</option>
+                  <option value="nature">Nature</option>
+                  <option value="mountains">Mountains</option>
+                  <option value="original">Original</option>
+                  <option value="print">Fine Art Print</option>
+                </select>
+                <select id="shopStatusFilter" style="background: #1a1a1a; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1rem; border-radius: var(--radius-pill); font-size: 0.88rem; cursor: pointer;">
+                  <option value="all">All Stock Statuses</option>
+                  <option value="instock">In Stock</option>
+                  <option value="soldout">Sold Out</option>
+                </select>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                  <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gray-400); font-size: 0.8rem; text-transform: uppercase;">
+                      <th style="padding: 0.85rem;">Product</th>
+                      <th style="padding: 0.85rem;">Title & Size</th>
+                      <th style="padding: 0.85rem;">Category</th>
+                      <th style="padding: 0.85rem;">Price</th>
+                      <th style="padding: 0.85rem;">Status</th>
+                      <th style="padding: 0.85rem; text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="shopItemsTableBody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
 
-          <!-- TAB 4: ADD PORTFOLIO ITEM -->
+          <!-- TAB 4: PORTFOLIO MASTERPIECES -->
           <div id="add-portfolio-tab" class="admin-tab-content" style="display: none;">
-            <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 2.5rem; max-width: 800px; margin: 0 auto;">
-              <h2 style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 300; margin-bottom: 0.5rem;">Add New Portfolio Masterpiece</h2>
-              <form id="addPortfolioForm" style="display: flex; flex-direction: column; gap: 1.25rem;">
-                <div class="form-group">
-                  <label class="form-label">Artwork Title</label>
-                  <input type="text" name="title" required placeholder="e.g. Machhapuchhre Sunset" class="form-input" />
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-                  <div class="form-group">
-                    <label class="form-label">Category Tag</label>
-                    <select name="category" class="form-input">
-                      <option value="landscape">Landscape</option>
-                      <option value="portrait">Portrait</option>
-                      <option value="abstract">Abstract</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Technique / Medium</label>
-                    <input type="text" name="medium" placeholder="Oil on Canvas" class="form-input" />
-                  </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-                  <div class="form-group">
-                    <label class="form-label">Price ($)</label>
-                    <input type="number" name="price" step="0.01" class="form-input" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Year</label>
-                    <input type="number" name="year" value="2024" class="form-input" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Dimensions</label>
-                    <input type="text" name="dimensions" placeholder="30&quot; x 40&quot;" class="form-input" />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Image URL</label>
-                  <input type="text" name="image" required value="/photos/paintings-of-nepal-2.jpg" class="form-input" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Description</label>
-                  <textarea name="description" rows="3" class="form-textarea"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="padding: 1rem; font-weight: 600;">+ Save Portfolio Masterpiece</button>
-              </form>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--gray-400); font-size: 0.8rem; text-transform: uppercase;">Total Artworks</span>
+                <h2 id="statTotalPortfolio" style="font-size: 2rem; margin-top: 0.5rem; color: #fff;">0</h2>
+              </div>
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: #28a745; font-size: 0.8rem; text-transform: uppercase;">Available</span>
+                <h2 id="statAvailablePortfolio" style="font-size: 2rem; margin-top: 0.5rem; color: #28a745;">0</h2>
+              </div>
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: #dc3545; font-size: 0.8rem; text-transform: uppercase;">Sold Out</span>
+                <h2 id="statSoldPortfolio" style="font-size: 2rem; margin-top: 0.5rem; color: #dc3545;">0</h2>
+              </div>
+              <div class="card" style="padding: 1.5rem; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08);">
+                <span style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase;">Categories</span>
+                <h2 id="statCategoriesPortfolio" style="font-size: 2rem; margin-top: 0.5rem; color: var(--accent);">0</h2>
+              </div>
+            </div>
+
+            <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 1.75rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 300;">Portfolio Masterpieces Gallery</h3>
+                <button id="openNewPortfolioModalBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-weight: 600;">🖼️ + Add New Artwork</button>
+              </div>
+
+              <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;">
+                <input type="text" id="portfolioSearchInput" placeholder="Search artworks by title..." style="flex: 1; min-width: 240px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1rem; border-radius: var(--radius-pill); font-size: 0.88rem;" />
+                <select id="portfolioCategoryFilter" style="background: #1a1a1a; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1rem; border-radius: var(--radius-pill); font-size: 0.88rem; cursor: pointer;">
+                  <option value="all">All Categories</option>
+                  <option value="landscape">Landscape</option>
+                  <option value="portrait">Portrait</option>
+                  <option value="abstract">Abstract</option>
+                  <option value="nature">Nature</option>
+                  <option value="mountains">Mountains</option>
+                </select>
+                <select id="portfolioStatusFilter" style="background: #1a1a1a; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.65rem 1rem; border-radius: var(--radius-pill); font-size: 0.88rem; cursor: pointer;">
+                  <option value="all">All Statuses</option>
+                  <option value="available">Available</option>
+                  <option value="sold">Sold</option>
+                </select>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                  <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gray-400); font-size: 0.8rem; text-transform: uppercase;">
+                      <th style="padding: 0.85rem;">Artwork</th>
+                      <th style="padding: 0.85rem;">Title & Size</th>
+                      <th style="padding: 0.85rem;">Category & Medium</th>
+                      <th style="padding: 0.85rem;">Price</th>
+                      <th style="padding: 0.85rem;">Status</th>
+                      <th style="padding: 0.85rem; text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="portfolioItemsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: CONTACT MESSAGES -->
+          <div id="messages-tab" class="admin-tab-content" style="display: none;">
+            <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 1.75rem; overflow-x: auto;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 300;">Contact Messages</h3>
+                <span id="msgCountBadge" style="background: rgba(154,176,126,0.15); color: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 600;">0 messages</span>
+              </div>
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gray-400); font-size: 0.8rem; text-transform: uppercase;">
+                    <th style="padding: 0.85rem;">ID</th>
+                    <th style="padding: 0.85rem;">Sender</th>
+                    <th style="padding: 0.85rem;">Subject</th>
+                    <th style="padding: 0.85rem;">Message</th>
+                    <th style="padding: 0.85rem;">Date</th>
+                    <th style="padding: 0.85rem;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="messagesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB: WORKSHOP BOOKINGS -->
+          <div id="workshops-tab" class="admin-tab-content" style="display: none;">
+            <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 1.75rem; overflow-x: auto;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 300;">Workshop Bookings</h3>
+                <span id="workshopCountBadge" style="background: rgba(154,176,126,0.15); color: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 600;">0 bookings</span>
+              </div>
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gray-400); font-size: 0.8rem; text-transform: uppercase;">
+                    <th style="padding: 0.85rem;">ID</th>
+                    <th style="padding: 0.85rem;">Name</th>
+                    <th style="padding: 0.85rem;">Contact</th>
+                    <th style="padding: 0.85rem;">Type</th>
+                    <th style="padding: 0.85rem;">Date & Time</th>
+                    <th style="padding: 0.85rem;">People</th>
+                    <th style="padding: 0.85rem;">Requests</th>
+                    <th style="padding: 0.85rem;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="workshopsTableBody"></tbody>
+              </table>
             </div>
           </div>
 
@@ -367,14 +440,25 @@ function render() {
                 </select>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-              <div class="form-group">
-                <label class="form-label">Author Name</label>
-                <input type="text" id="editorAuthor" value="Suman Wagle" class="form-input" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Cover / Featured Image URL</label>
-                <input type="text" id="editorImage" value="/photos/photo-wedding.png" class="form-input" />
+            <div class="form-group">
+              <label class="form-label">Author Name</label>
+              <input type="text" id="editorAuthor" value="Suman Wagle" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cover / Featured Image</label>
+              <input type="hidden" id="editorImage" value="/photos/photo-wedding.png" />
+              <div id="blogDropZone" style="border: 2px dashed rgba(154,176,126,0.4); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(154,176,126,0.03); position: relative;">
+                <input type="file" id="blogFileInput" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2;" />
+                <div id="blogDropContent">
+                  <div style="font-size: 2.5rem; margin-bottom: 0.5rem; opacity: 0.6;">📷</div>
+                  <p style="color: var(--accent); font-weight: 600; margin-bottom: 0.25rem; font-size: 0.95rem;">Drag & drop blog cover image here</p>
+                  <p style="color: var(--gray-400); font-size: 0.82rem; margin: 0;">or click to browse • JPG, PNG, WebP up to 10MB</p>
+                </div>
+                <div id="blogPreviewContainer" style="display: none;">
+                  <img id="blogPreviewImg" style="max-height: 180px; max-width: 100%; border-radius: var(--radius-md); margin-bottom: 0.5rem; object-fit: contain;" />
+                  <p id="blogFileName" style="color: var(--accent); font-size: 0.82rem; margin: 0;"></p>
+                  <button type="button" id="blogRemoveImg" style="margin-top: 0.5rem; background: rgba(220,53,69,0.15); border: 1px solid #dc3545; color: #ff6b6b; padding: 0.3rem 0.85rem; border-radius: var(--radius-pill); font-size: 0.78rem; cursor: pointer;">✕ Remove / Change</button>
+                </div>
               </div>
             </div>
             <div class="form-group">
@@ -461,6 +545,140 @@ function render() {
           </form>
         </div>
       </div>
+      <!-- ADD SHOP ITEM MODAL -->
+      <div id="shopModal" style="position: fixed; inset: 0; background: rgba(5,5,5,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1.5rem;">
+        <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg); padding: 2.5rem; max-width: 800px; width: 100%; max-height: 92vh; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
+            <h3 style="font-family: var(--font-heading); font-size: 2rem; font-weight: 300; margin: 0;">Add New Shop Product</h3>
+            <button id="closeShopModal" style="background: none; border: none; color: #fff; font-size: 2.2rem; cursor: pointer; line-height: 1;">&times;</button>
+          </div>
+          <form id="addShopForm" style="display: flex; flex-direction: column; gap: 1.25rem;" enctype="multipart/form-data">
+            <div class="form-group">
+              <label class="form-label">Item Title</label>
+              <input type="text" name="title" required placeholder="e.g. Annapurna Morning Light" class="form-input" />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+              <div class="form-group">
+                <label class="form-label">Selling Price ($)</label>
+                <input type="number" name="price" required step="0.01" placeholder="250.00" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Original Price ($)</label>
+                <input type="number" name="originalPrice" step="0.01" placeholder="300.00" class="form-input" />
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select name="category" class="form-input">
+                  <option value="original">Original Painting</option>
+                  <option value="print">Fine Art Print</option>
+                  <option value="landscape">Landscape</option>
+                  <option value="portrait">Portrait</option>
+                  <option value="abstract">Abstract</option>
+                  <option value="mountains">Mountains</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Medium & Material</label>
+                <input type="text" name="medium" placeholder="Oil on Canvas" class="form-input" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dimensions / Size</label>
+              <input type="text" name="dimensions" placeholder="24&quot; x 36&quot;" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Artwork Image (Drag & Drop)</label>
+              <div id="shopDropZone" style="border: 2px dashed rgba(154,176,126,0.4); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(154,176,126,0.03); position: relative;">
+                <input type="file" name="image" id="shopFileInput" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2;" />
+                <div id="shopDropContent">
+                  <div style="font-size: 3rem; margin-bottom: 0.75rem; opacity: 0.6;">📷</div>
+                  <p style="color: var(--accent); font-weight: 600; margin-bottom: 0.25rem; font-size: 1rem;">Drag & drop your image here</p>
+                  <p style="color: var(--gray-400); font-size: 0.85rem; margin: 0;">or click to browse • JPG, PNG, WebP up to 10MB</p>
+                </div>
+                <div id="shopPreviewContainer" style="display: none;">
+                  <img id="shopPreviewImg" style="max-height: 200px; max-width: 100%; border-radius: var(--radius-md); margin-bottom: 0.75rem; object-fit: contain;" />
+                  <p id="shopFileName" style="color: var(--accent); font-size: 0.85rem; margin: 0;"></p>
+                  <button type="button" id="shopRemoveImg" style="margin-top: 0.5rem; background: rgba(220,53,69,0.15); border: 1px solid #dc3545; color: #ff6b6b; padding: 0.35rem 1rem; border-radius: var(--radius-pill); font-size: 0.8rem; cursor: pointer;">✕ Remove</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Item Description</label>
+              <textarea name="description" rows="3" class="form-textarea"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding: 1rem; font-weight: 600;">+ Save Shop Item</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADD PORTFOLIO ITEM MODAL -->
+      <div id="portfolioModal" style="position: fixed; inset: 0; background: rgba(5,5,5,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1.5rem;">
+        <div class="card" style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg); padding: 2.5rem; max-width: 800px; width: 100%; max-height: 92vh; overflow-y: auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
+            <h3 style="font-family: var(--font-heading); font-size: 2rem; font-weight: 300; margin: 0;">Add New Portfolio Masterpiece</h3>
+            <button id="closePortfolioModal" style="background: none; border: none; color: #fff; font-size: 2.2rem; cursor: pointer; line-height: 1;">&times;</button>
+          </div>
+          <form id="addPortfolioForm" style="display: flex; flex-direction: column; gap: 1.25rem;" enctype="multipart/form-data">
+            <div class="form-group">
+              <label class="form-label">Artwork Title</label>
+              <input type="text" name="title" required placeholder="e.g. Machhapuchhre Sunset" class="form-input" />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+              <div class="form-group">
+                <label class="form-label">Category Tag</label>
+                <select name="category" class="form-input">
+                  <option value="landscape">Landscape</option>
+                  <option value="portrait">Portrait</option>
+                  <option value="abstract">Abstract</option>
+                  <option value="nature">Nature</option>
+                  <option value="mountains">Mountains</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Technique / Medium</label>
+                <input type="text" name="medium" placeholder="Oil on Canvas" class="form-input" />
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label">Price ($)</label>
+                <input type="number" name="price" step="0.01" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Year</label>
+                <input type="number" name="year" value="2024" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Dimensions</label>
+                <input type="text" name="dimensions" placeholder="30&quot; x 40&quot;" class="form-input" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Artwork Image (Drag & Drop)</label>
+              <div id="portfolioDropZone" style="border: 2px dashed rgba(154,176,126,0.4); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: rgba(154,176,126,0.03); position: relative;">
+                <input type="file" name="image" id="portfolioFileInput" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2;" />
+                <div id="portfolioDropContent">
+                  <div style="font-size: 3rem; margin-bottom: 0.75rem; opacity: 0.6;">📷</div>
+                  <p style="color: var(--accent); font-weight: 600; margin-bottom: 0.25rem; font-size: 1rem;">Drag & drop your image here</p>
+                  <p style="color: var(--gray-400); font-size: 0.85rem; margin: 0;">or click to browse • JPG, PNG, WebP up to 10MB</p>
+                </div>
+                <div id="portfolioPreviewContainer" style="display: none;">
+                  <img id="portfolioPreviewImg" style="max-height: 200px; max-width: 100%; border-radius: var(--radius-md); margin-bottom: 0.75rem; object-fit: contain;" />
+                  <p id="portfolioFileName" style="color: var(--accent); font-size: 0.85rem; margin: 0;"></p>
+                  <button type="button" id="portfolioRemoveImg" style="margin-top: 0.5rem; background: rgba(220,53,69,0.15); border: 1px solid #dc3545; color: #ff6b6b; padding: 0.35rem 1rem; border-radius: var(--radius-pill); font-size: 0.8rem; cursor: pointer;">✕ Remove</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea name="description" rows="3" class="form-textarea"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding: 1rem; font-weight: 600;">+ Save Portfolio Masterpiece</button>
+          </form>
+        </div>
+      </div>
     </div>
   `;
 }
@@ -508,6 +726,10 @@ function init() {
     fetchOrders();
     fetchBlogs();
     fetchAuditLogs();
+    fetchMessages();
+    fetchWorkshops();
+    fetchAdminShopItems();
+    fetchAdminPortfolioItems();
   }
 
   // 30-Minute Inactivity Auto-Logout
@@ -604,6 +826,10 @@ function init() {
       });
 
       if (target === "audit-tab") fetchAuditLogs();
+      if (target === "messages-tab") fetchMessages();
+      if (target === "workshops-tab") fetchWorkshops();
+      if (target === "add-shop-tab") fetchAdminShopItems();
+      if (target === "add-portfolio-tab") fetchAdminPortfolioItems();
     });
   });
 
@@ -832,8 +1058,8 @@ function init() {
   function attachBlogTableEvents() {
     document.querySelectorAll(".edit-blog-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        let id = Number(btn.getAttribute("data-id"));
-        let blog = blogsList.find((b) => b.id === id);
+        let id = btn.getAttribute("data-id");
+        let blog = blogsList.find((b) => String(b.id) === String(id));
         if (blog) openBlogEditor(blog);
       });
     });
@@ -841,12 +1067,19 @@ function init() {
     document.querySelectorAll(".del-blog-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         if (!confirm("Are you sure you want to delete this article?")) return;
-        let id = Number(btn.getAttribute("data-id"));
+        let id = btn.getAttribute("data-id");
         try {
           let res = await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
           let data = await res.json();
-          if (data.success) fetchBlogs();
-        } catch (e) {}
+          if (data.success) {
+            alert("Article deleted successfully!");
+            fetchBlogs();
+          } else {
+            alert(data.error || "Failed to delete article.");
+          }
+        } catch (e) {
+          alert("Network error deleting article.");
+        }
       });
     });
   }
@@ -866,7 +1099,26 @@ function init() {
     document.getElementById("editorSlug").value = blog ? blog.slug : "";
     document.getElementById("editorCategory").value = blog ? blog.category : "Live Wedding Paintings";
     document.getElementById("editorAuthor").value = blog ? blog.author : "Suman Wagle";
-    document.getElementById("editorImage").value = blog ? blog.image : "/photos/photo-wedding.png";
+    let imgVal = blog && blog.image ? blog.image : "";
+    document.getElementById("editorImage").value = imgVal;
+    let bDrop = document.getElementById("blogDropContent"),
+      bPrev = document.getElementById("blogPreviewContainer"),
+      bImg = document.getElementById("blogPreviewImg"),
+      bName = document.getElementById("blogFileName"),
+      bFile = document.getElementById("blogFileInput");
+    if (imgVal && bImg && bPrev && bDrop) {
+      bImg.src = imgVal;
+      if (bName) bName.textContent = imgVal.split("/").pop();
+      bDrop.style.display = "none";
+      bPrev.style.display = "block";
+      if (bFile) bFile.style.display = "none";
+    } else {
+      if (bDrop) bDrop.style.display = "block";
+      if (bPrev) bPrev.style.display = "none";
+      if (bFile) bFile.style.display = "block";
+      if (bImg) bImg.src = "";
+      if (bName) bName.textContent = "";
+    }
     document.getElementById("editorSummary").value = blog ? blog.summary : "";
     document.getElementById("blogContentEditor").innerHTML = blog ? blog.content : "<p>Start writing article content...</p>";
     document.getElementById("editorStatus").value = blog ? blog.status : "Published";
@@ -920,6 +1172,591 @@ function init() {
 
   document.getElementById("saveDraftBtn")?.addEventListener("click", (e) => { e.preventDefault(); saveBlog("Draft"); });
   document.getElementById("publishNowBtn")?.addEventListener("click", (e) => { e.preventDefault(); saveBlog("Published"); });
+
+  // ========================================================================
+  // DRAG & DROP IMAGE UPLOAD FOR SHOP
+  // ========================================================================
+  function setupDropZone(dropZoneId, fileInputId, dropContentId, previewContainerId, previewImgId, fileNameId, removeBtnId) {
+    let dropZone = document.getElementById(dropZoneId),
+      fileInput = document.getElementById(fileInputId),
+      dropContent = document.getElementById(dropContentId),
+      previewContainer = document.getElementById(previewContainerId),
+      previewImg = document.getElementById(previewImgId),
+      fileName = document.getElementById(fileNameId),
+      removeBtn = document.getElementById(removeBtnId);
+
+    if (!dropZone || !fileInput) return;
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      dropZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.style.borderColor = 'var(--accent)';
+        dropZone.style.background = 'rgba(154,176,126,0.08)';
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(evt => {
+      dropZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.style.borderColor = 'rgba(154,176,126,0.4)';
+        dropZone.style.background = 'rgba(154,176,126,0.03)';
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      let files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        showPreview(files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) showPreview(fileInput.files[0]);
+    });
+
+    function showPreview(file) {
+      if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        fileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+        dropContent.style.display = 'none';
+        previewContainer.style.display = 'block';
+        fileInput.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    if (removeBtn) {
+      removeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.value = '';
+        previewImg.src = '';
+        fileName.textContent = '';
+        dropContent.style.display = 'block';
+        previewContainer.style.display = 'none';
+        fileInput.style.display = 'block';
+      });
+    }
+  }
+
+  setupDropZone('shopDropZone', 'shopFileInput', 'shopDropContent', 'shopPreviewContainer', 'shopPreviewImg', 'shopFileName', 'shopRemoveImg');
+  setupDropZone('portfolioDropZone', 'portfolioFileInput', 'portfolioDropContent', 'portfolioPreviewContainer', 'portfolioPreviewImg', 'portfolioFileName', 'portfolioRemoveImg');
+
+  // ========================================================================
+  // DRAG & DROP FOR BLOG COVER IMAGE (with instant server upload)
+  // ========================================================================
+  let blogDropZone = document.getElementById("blogDropZone"),
+    blogFileInput = document.getElementById("blogFileInput"),
+    blogDropContent = document.getElementById("blogDropContent"),
+    blogPreviewContainer = document.getElementById("blogPreviewContainer"),
+    blogPreviewImg = document.getElementById("blogPreviewImg"),
+    blogFileName = document.getElementById("blogFileName"),
+    blogRemoveImg = document.getElementById("blogRemoveImg"),
+    editorImage = document.getElementById("editorImage");
+
+  if (blogDropZone && blogFileInput) {
+    ['dragenter', 'dragover'].forEach(evt => {
+      blogDropZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        blogDropZone.style.borderColor = 'var(--accent)';
+        blogDropZone.style.background = 'rgba(154,176,126,0.08)';
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(evt => {
+      blogDropZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        blogDropZone.style.borderColor = 'rgba(154,176,126,0.4)';
+        blogDropZone.style.background = 'rgba(154,176,126,0.03)';
+      });
+    });
+
+    async function handleBlogFile(file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file.');
+        return;
+      }
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        if (blogPreviewImg) blogPreviewImg.src = e.target.result;
+        if (blogFileName) blogFileName.textContent = file.name + ' (Uploading...)';
+        if (blogDropContent) blogDropContent.style.display = 'none';
+        if (blogPreviewContainer) blogPreviewContainer.style.display = 'block';
+        if (blogFileInput) blogFileInput.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+
+      let formData = new FormData();
+      formData.append('image', file);
+      try {
+        let res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+        let data = await res.json();
+        if (data.success && data.url) {
+          if (editorImage) editorImage.value = data.url;
+          if (blogFileName) blogFileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB) ✓ Uploaded';
+        } else {
+          alert(data.error || 'Failed to upload image.');
+        }
+      } catch (err) {
+        alert('Failed to upload image to server.');
+      }
+    }
+
+    blogDropZone.addEventListener('drop', (e) => {
+      let files = e.dataTransfer.files;
+      if (files.length > 0) {
+        blogFileInput.files = files;
+        handleBlogFile(files[0]);
+      }
+    });
+
+    blogFileInput.addEventListener('change', () => {
+      if (blogFileInput.files.length > 0) handleBlogFile(blogFileInput.files[0]);
+    });
+
+    if (blogRemoveImg) {
+      blogRemoveImg.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        blogFileInput.value = '';
+        if (editorImage) editorImage.value = '';
+        if (blogPreviewImg) blogPreviewImg.src = '';
+        if (blogFileName) blogFileName.textContent = '';
+        if (blogDropContent) blogDropContent.style.display = 'block';
+        if (blogPreviewContainer) blogPreviewContainer.style.display = 'none';
+        if (blogFileInput) blogFileInput.style.display = 'block';
+      });
+    }
+  }
+
+  // Blog Rich Text Toolbar Actions
+  document.querySelectorAll(".toolbar-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      let cmd = btn.getAttribute("data-cmd"),
+        val = btn.getAttribute("data-val") || null;
+      document.execCommand(cmd, false, val);
+      document.getElementById("blogContentEditor")?.focus();
+    });
+  });
+
+  document.getElementById("toolbarLinkBtn")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    let url = prompt("Enter the link URL:", "https://");
+    if (url) document.execCommand("createLink", false, url);
+  });
+
+  document.getElementById("toolbarImgBtn")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    let url = prompt("Enter image URL:", "/photos/paintings-of-nepal-1.jpg");
+    if (url) document.execCommand("insertImage", false, url);
+  });
+
+  // Shop & Portfolio Modal Triggers
+  document.getElementById('openNewShopModalBtn')?.addEventListener('click', () => {
+    let m = document.getElementById('shopModal');
+    if (m) m.style.display = 'flex';
+  });
+  document.getElementById('closeShopModal')?.addEventListener('click', () => {
+    let m = document.getElementById('shopModal');
+    if (m) m.style.display = 'none';
+  });
+
+  document.getElementById('openNewPortfolioModalBtn')?.addEventListener('click', () => {
+    let m = document.getElementById('portfolioModal');
+    if (m) m.style.display = 'flex';
+  });
+  document.getElementById('closePortfolioModal')?.addEventListener('click', () => {
+    let m = document.getElementById('portfolioModal');
+    if (m) m.style.display = 'none';
+  });
+
+  // ========================================================================
+  // SHOP FORM SUBMISSION (FormData with file)
+  // ========================================================================
+  let shopForm = document.getElementById('addShopForm');
+  shopForm && shopForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let formData = new FormData(shopForm);
+    let submitBtn = shopForm.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Saving...'; }
+
+    try {
+      let res = await fetch('/api/admin/shop', { method: 'POST', body: formData });
+      let data = await res.json();
+      if (data.success) {
+        alert('Shop product added successfully!');
+        shopForm.reset();
+        let sc = document.getElementById('shopDropContent'), sp = document.getElementById('shopPreviewContainer');
+        if (sc) sc.style.display = 'block';
+        if (sp) sp.style.display = 'none';
+        let sf = document.getElementById('shopFileInput');
+        if (sf) sf.style.display = 'block';
+        let sm = document.getElementById('shopModal');
+        if (sm) sm.style.display = 'none';
+        fetchAdminShopItems();
+      } else {
+        alert(data.error || 'Failed to add shop product.');
+      }
+    } catch (err) {
+      alert('Failed to save shop product.');
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '+ Save Shop Item'; }
+    }
+  });
+
+  // ========================================================================
+  // SHOP ITEMS MANAGEMENT & DELETION
+  // ========================================================================
+  let shopItemsList = [], shopSearch = '', shopCategory = 'all', shopStatus = 'all';
+
+  document.getElementById('shopSearchInput')?.addEventListener('input', (e) => {
+    shopSearch = e.target.value.toLowerCase();
+    renderShopTable();
+  });
+  document.getElementById('shopCategoryFilter')?.addEventListener('change', (e) => {
+    shopCategory = e.target.value.toLowerCase();
+    renderShopTable();
+  });
+  document.getElementById('shopStatusFilter')?.addEventListener('change', (e) => {
+    shopStatus = e.target.value;
+    renderShopTable();
+  });
+
+  async function fetchAdminShopItems() {
+    try {
+      let res = await fetch('/api/shop');
+      let data = await res.json();
+      if (data.success) {
+        shopItemsList = data.items || [];
+        renderShopTable();
+      }
+    } catch (e) {}
+  }
+
+  function renderShopTable() {
+    let tbody = document.getElementById("shopItemsTableBody");
+    if (!tbody) return;
+
+    let statTotal = document.getElementById("statTotalShop"),
+      statInStock = document.getElementById("statInStockShop"),
+      statSale = document.getElementById("statSaleShop"),
+      statCat = document.getElementById("statCategoriesShop");
+
+    if (statTotal) statTotal.textContent = shopItemsList.length;
+    if (statInStock) statInStock.textContent = shopItemsList.filter(i => i.inStock !== false).length;
+    if (statSale) statSale.textContent = shopItemsList.filter(i => i.onSale).length;
+    if (statCat) statCat.textContent = new Set(shopItemsList.map(i => (i.category || 'original').toLowerCase())).size;
+
+    let filtered = shopItemsList.filter(item => {
+      let matchSearch = shopSearch === '' || (item.title && item.title.toLowerCase().includes(shopSearch));
+      let matchCat = shopCategory === 'all' || (item.category && item.category.toLowerCase().includes(shopCategory));
+      let matchStat = shopStatus === 'all' || (shopStatus === 'instock' ? item.inStock !== false : item.inStock === false);
+      return matchSearch && matchCat && matchStat;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--gray-400);">No shop products found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map((item) => `
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 0.85rem;"><img src="${item.image || '/photos/paintings-of-nepal-1.jpg'}" style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px;" /></td>
+        <td style="padding: 0.85rem;"><div style="color: #fff; font-weight: 600;">${item.title}</div><div style="color: var(--gray-400); font-size: 0.78rem;">${item.dimensions || ''}</div></td>
+        <td style="padding: 0.85rem; color: var(--gray-300); text-transform: capitalize;">${item.category || 'Original'}</td>
+        <td style="padding: 0.85rem; color: var(--gray-300);">${item.medium || 'Oil on Canvas'}</td>
+        <td style="padding: 0.85rem; color: var(--accent); font-weight: bold;">$${item.price}</td>
+        <td style="padding: 0.85rem;"><span style="color: ${item.inStock !== false ? '#28a745' : '#dc3545'}; border: 1px solid ${item.inStock !== false ? '#28a745' : '#dc3545'}; padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); font-size: 0.75rem;">${item.inStock !== false ? 'In Stock' : 'Sold Out'}</span></td>
+        <td style="padding: 0.85rem; text-align: right;">
+          <button class="btn btn-secondary del-shop-btn" data-id="${item.id}" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; color: #dc3545; border-color: #dc3545; cursor: pointer;">🗑️ Delete</button>
+        </td>
+      </tr>
+    `).join("");
+
+    document.querySelectorAll(".del-shop-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Are you sure you want to delete this shop product?")) return;
+        let id = btn.getAttribute("data-id");
+        try {
+          let res = await fetch(`/api/admin/shop/${id}`, { method: "DELETE" });
+          let data = await res.json();
+          if (data.success) {
+            alert("Shop product deleted successfully!");
+            fetchAdminShopItems();
+          } else {
+            alert(data.error || "Failed to delete shop product.");
+          }
+        } catch (err) {
+          alert("Network error.");
+        }
+      });
+    });
+  }
+
+  // ========================================================================
+  // PORTFOLIO FORM SUBMISSION (FormData with file)
+  // ========================================================================
+  let portfolioForm = document.getElementById('addPortfolioForm');
+  portfolioForm && portfolioForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let formData = new FormData(portfolioForm);
+    let submitBtn = portfolioForm.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Saving...'; }
+
+    try {
+      let res = await fetch('/api/admin/portfolio', { method: 'POST', body: formData });
+      let data = await res.json();
+      if (data.success) {
+        alert('Portfolio artwork added successfully!');
+        portfolioForm.reset();
+        let pc = document.getElementById('portfolioDropContent'), pp = document.getElementById('portfolioPreviewContainer');
+        if (pc) pc.style.display = 'block';
+        if (pp) pp.style.display = 'none';
+        let pf = document.getElementById('portfolioFileInput');
+        if (pf) pf.style.display = 'block';
+        let pm = document.getElementById('portfolioModal');
+        if (pm) pm.style.display = 'none';
+        fetchAdminPortfolioItems();
+      } else {
+        alert(data.error || 'Failed to add portfolio artwork.');
+      }
+    } catch (err) {
+      alert('Failed to save portfolio artwork.');
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '+ Save Portfolio Masterpiece'; }
+    }
+  });
+
+  // ========================================================================
+  // PORTFOLIO ITEMS MANAGEMENT & DELETION
+  // ========================================================================
+  let portfolioItemsList = [], portfolioSearch = '', portfolioCategory = 'all', portfolioStatus = 'all';
+
+  document.getElementById('portfolioSearchInput')?.addEventListener('input', (e) => {
+    portfolioSearch = e.target.value.toLowerCase();
+    renderPortfolioTable();
+  });
+  document.getElementById('portfolioCategoryFilter')?.addEventListener('change', (e) => {
+    portfolioCategory = e.target.value.toLowerCase();
+    renderPortfolioTable();
+  });
+  document.getElementById('portfolioStatusFilter')?.addEventListener('change', (e) => {
+    portfolioStatus = e.target.value;
+    renderPortfolioTable();
+  });
+
+  async function fetchAdminPortfolioItems() {
+    try {
+      let res = await fetch('/api/portfolio');
+      let data = await res.json();
+      if (data.success) {
+        portfolioItemsList = data.items || [];
+        renderPortfolioTable();
+      }
+    } catch (e) {}
+  }
+
+  function renderPortfolioTable() {
+    let tbody = document.getElementById("portfolioItemsTableBody");
+    if (!tbody) return;
+
+    let statTotal = document.getElementById("statTotalPortfolio"),
+      statAvail = document.getElementById("statAvailablePortfolio"),
+      statSold = document.getElementById("statSoldPortfolio"),
+      statFeat = document.getElementById("statFeaturedPortfolio");
+
+    if (statTotal) statTotal.textContent = portfolioItemsList.length;
+    if (statAvail) statAvail.textContent = portfolioItemsList.filter(i => i.available !== false).length;
+    if (statSold) statSold.textContent = portfolioItemsList.filter(i => i.available === false).length;
+    if (statFeat) statFeat.textContent = new Set(portfolioItemsList.map(i => (i.category || 'landscape').toLowerCase())).size;
+
+    let filtered = portfolioItemsList.filter(item => {
+      let matchSearch = portfolioSearch === '' || (item.title && item.title.toLowerCase().includes(portfolioSearch));
+      let matchCat = portfolioCategory === 'all' || (item.category && item.category.toLowerCase().includes(portfolioCategory));
+      let matchStat = portfolioStatus === 'all' || (portfolioStatus === 'available' ? item.available !== false : item.available === false);
+      return matchSearch && matchCat && matchStat;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2.5rem; color: var(--gray-400);">No portfolio artworks found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map((item) => `
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 0.85rem;"><img src="${item.image || '/photos/paintings-of-nepal-2.jpg'}" style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px;" /></td>
+        <td style="padding: 0.85rem;"><div style="color: #fff; font-weight: 600;">${item.title}</div><div style="color: var(--gray-400); font-size: 0.78rem;">${item.dimensions || ''}</div></td>
+        <td style="padding: 0.85rem; color: var(--gray-300); text-transform: capitalize;">${item.category || 'Landscape'}</td>
+        <td style="padding: 0.85rem; color: var(--gray-300);">${item.medium || item.technique || 'Oil on Canvas'}</td>
+        <td style="padding: 0.85rem; color: var(--gray-400);">${item.year || 2024}</td>
+        <td style="padding: 0.85rem; color: var(--accent); font-weight: bold;">$${item.price || 0}</td>
+        <td style="padding: 0.85rem;"><span style="color: ${item.available !== false ? '#28a745' : '#dc3545'}; border: 1px solid ${item.available !== false ? '#28a745' : '#dc3545'}; padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); font-size: 0.75rem;">${item.available !== false ? 'Available' : 'Sold'}</span></td>
+        <td style="padding: 0.85rem; text-align: right;">
+          <button class="btn btn-secondary del-portfolio-btn" data-id="${item.id}" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; color: #dc3545; border-color: #dc3545; cursor: pointer;">🗑️ Delete</button>
+        </td>
+      </tr>
+    `).join("");
+
+    document.querySelectorAll(".del-portfolio-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Are you sure you want to delete this portfolio artwork?")) return;
+        let id = btn.getAttribute("data-id");
+        try {
+          let res = await fetch(`/api/admin/portfolio/${id}`, { method: "DELETE" });
+          let data = await res.json();
+          if (data.success) {
+            alert("Portfolio artwork deleted successfully!");
+            fetchAdminPortfolioItems();
+          } else {
+            alert(data.error || "Failed to delete artwork.");
+          }
+        } catch (err) {
+          alert("Network error.");
+        }
+      });
+    });
+  }
+
+  // ========================================================================
+  // CONTACT MESSAGES MODULE
+  // ========================================================================
+  let messagesList = [];
+
+  async function fetchMessages() {
+    try {
+      let res = await fetch('/api/admin/messages');
+      let data = await res.json();
+      if (data.success) {
+        messagesList = data.messages || [];
+        renderMessages();
+      }
+    } catch (e) {}
+  }
+
+  function renderMessages() {
+    let tbody = document.getElementById('messagesTableBody');
+    let badge = document.getElementById('msgCountBadge');
+    if (!tbody) return;
+    if (badge) badge.textContent = messagesList.length + ' messages';
+
+    if (messagesList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--gray-400);">No messages yet.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = messagesList.map((m) => {
+      let statusColor = m.status === 'Unread' ? '#f5a623' : m.status === 'Replied' ? '#28a745' : '#17a2b8';
+      return `
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <td style="padding: 0.85rem; font-weight: bold; color: var(--accent); font-size: 0.82rem;">${m.id}</td>
+          <td style="padding: 0.85rem;">
+            <div style="color: #fff; font-weight: 600;">${m.name}</div>
+            <div style="color: var(--gray-400); font-size: 0.78rem;">${m.email} ${m.phone ? '• ' + m.phone : ''}</div>
+          </td>
+          <td style="padding: 0.85rem; color: var(--gray-200);">${m.subject}</td>
+          <td style="padding: 0.85rem; color: var(--gray-300); font-size: 0.85rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${m.message}</td>
+          <td style="padding: 0.85rem; color: var(--gray-400); font-size: 0.82rem;">${new Date(m.createdAt).toLocaleString()}</td>
+          <td style="padding: 0.85rem;">
+            <select class="msg-status-select" data-id="${m.id}" style="padding: 0.35rem 0.6rem; font-size: 0.78rem; background: #1a1a1a; color: ${statusColor}; border: 1px solid ${statusColor}; border-radius: var(--radius-pill); cursor: pointer;">
+              <option value="Unread" ${m.status === 'Unread' ? 'selected' : ''}>Unread</option>
+              <option value="Read" ${m.status === 'Read' ? 'selected' : ''}>Read</option>
+              <option value="Replied" ${m.status === 'Replied' ? 'selected' : ''}>Replied</option>
+            </select>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.msg-status-select').forEach((sel) => {
+      sel.addEventListener('change', async (e) => {
+        let id = sel.getAttribute('data-id');
+        try {
+          await fetch(`/api/admin/messages/${id}/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: e.target.value })
+          });
+          fetchMessages();
+        } catch (err) {}
+      });
+    });
+  }
+
+  // ========================================================================
+  // WORKSHOP BOOKINGS MODULE
+  // ========================================================================
+  let workshopsList = [];
+
+  async function fetchWorkshops() {
+    try {
+      let res = await fetch('/api/admin/workshops');
+      let data = await res.json();
+      if (data.success) {
+        workshopsList = data.bookings || [];
+        renderWorkshops();
+      }
+    } catch (e) {}
+  }
+
+  function renderWorkshops() {
+    let tbody = document.getElementById('workshopsTableBody');
+    let badge = document.getElementById('workshopCountBadge');
+    if (!tbody) return;
+    if (badge) badge.textContent = workshopsList.length + ' bookings';
+
+    if (workshopsList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 3rem; color: var(--gray-400);">No workshop bookings yet.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = workshopsList.map((w) => {
+      let statusColor = w.status === 'Pending' ? '#f5a623' : w.status === 'Confirmed' ? '#28a745' : w.status === 'Cancelled' ? '#dc3545' : '#17a2b8';
+      return `
+        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <td style="padding: 0.85rem; font-weight: bold; color: var(--accent); font-size: 0.82rem;">${w.id}</td>
+          <td style="padding: 0.85rem; color: #fff; font-weight: 600;">${w.name}</td>
+          <td style="padding: 0.85rem;">
+            <div style="color: var(--gray-200); font-size: 0.85rem;">${w.email}</div>
+            <div style="color: var(--gray-400); font-size: 0.78rem;">${w.phone || '-'}</div>
+          </td>
+          <td style="padding: 0.85rem; color: var(--accent); font-weight: 600;">${w.type} ($${w.type === 'Group' ? '100' : '20'})</td>
+          <td style="padding: 0.85rem; color: var(--gray-200);">${w.date || '-'} @ ${w.time || '-'}</td>
+          <td style="padding: 0.85rem; color: #fff; text-align: center;">${w.people}</td>
+          <td style="padding: 0.85rem; color: var(--gray-300); font-size: 0.85rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${w.requests || '-'}</td>
+          <td style="padding: 0.85rem;">
+            <select class="workshop-status-select" data-id="${w.id}" style="padding: 0.35rem 0.6rem; font-size: 0.78rem; background: #1a1a1a; color: ${statusColor}; border: 1px solid ${statusColor}; border-radius: var(--radius-pill); cursor: pointer;">
+              <option value="Pending" ${w.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Confirmed" ${w.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+              <option value="Completed" ${w.status === 'Completed' ? 'selected' : ''}>Completed</option>
+              <option value="Cancelled" ${w.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.workshop-status-select').forEach((sel) => {
+      sel.addEventListener('change', async (e) => {
+        let id = sel.getAttribute('data-id');
+        try {
+          await fetch(`/api/admin/workshops/${id}/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: e.target.value })
+          });
+          fetchWorkshops();
+        } catch (err) {}
+      });
+    });
+  }
 
   // Check Auth on Init
   checkSession();

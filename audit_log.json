@@ -1,5 +1,72 @@
 [
   {
+    "timestamp": "2026-08-31T14:58:01.008Z",
+    "action": "LOGIN_SUCCESS",
+    "user": "admin",
+    "ip": "::1",
+    "details": {
+      "rememberMe": true
+    }
+  },
+  {
+    "timestamp": "2026-08-31T14:42:20.629Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T14:41:08.434Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T14:41:08.431Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T14:41:08.429Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T14:41:08.426Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T14:41:08.423Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T14:41:08.421Z",
+    "action": "LOGOUT",
+    "user": "admin",
+    "ip": "::1",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-08-31T13:32:33.898Z",
+    "action": "LOGIN_SUCCESS",
+    "user": "admin",
+    "ip": "::1",
+    "details": {
+      "rememberMe": true
+    }
+  },
+  {
     "timestamp": "2026-07-23T14:40:45.686Z",
     "action": "LOGIN_SUCCESS",
     "user": "admin",

@@ -915,7 +915,8 @@ select option {
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.loader.fade-out {
+.loader.fade-out,
+.loader.loaded {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;

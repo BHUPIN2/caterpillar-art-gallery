@@ -1,0 +1,12 @@
+[
+  {
+    "id": "MSG-394ADAD3",
+    "name": "Test User",
+    "email": "test@example.com",
+    "phone": "+977 9800000000",
+    "subject": "General Inquiry",
+    "message": "This is a test message from the contact form.",
+    "status": "Unread",
+    "createdAt": "2026-08-31T13:30:32.598Z"
+  }
+]

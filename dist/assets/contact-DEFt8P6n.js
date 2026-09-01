@@ -141,10 +141,38 @@ function render() {
 
 function init() {
   let form = document.getElementById("contact-form");
-  form && form.addEventListener("submit", (e) => {
+  form && form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    alert("Thank you! Your message has been sent successfully. We will get back to you shortly.");
-    form.reset();
+    let submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
+
+    let formData = new FormData(form);
+    let payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone') || '',
+      subject: formData.get('subject') || 'General Inquiry',
+      message: formData.get('message')
+    };
+
+    try {
+      let res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      let data = await res.json();
+      if (data.success) {
+        alert("Thank you! Your message has been sent successfully. We will get back to you shortly.");
+        form.reset();
+      } else {
+        alert(data.error || "Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      alert("Network error. Please check your connection and try again.");
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message \u2192'; }
+    }
   });
 
   document.querySelectorAll(".accordion-header").forEach((header) => {

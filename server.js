@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 
 // Load environment variables
 dotenv.config();
@@ -24,6 +25,35 @@ const PORT = Number(process.env.PORT) || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'cag-super-secret-jwt-key-2026';
 const ADMIN_CREDENTIALS_FILE = path.join(__dirname, 'admin_credentials.json');
 const AUDIT_LOG_FILE = path.join(__dirname, 'audit_log.json');
+const CONTACT_MESSAGES_FILE = path.join(__dirname, 'contact_messages.json');
+const WORKSHOP_BOOKINGS_FILE = path.join(__dirname, 'workshop_bookings.json');
+
+// Multer storage for image uploads
+const uploadsDir = path.join(__dirname, 'dist', 'photos', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadsDir),
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname) || '.jpg';
+    cb(null, 'img-' + uniqueSuffix + ext);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  fileFilter: (req, file, cb) => {
+    const allowed = /jpeg|jpg|png|gif|webp|svg/;
+    const extname = allowed.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowed.test(file.mimetype);
+    if (extname && mimetype) return cb(null, true);
+    cb(new Error('Only image files are allowed.'));
+  }
+});
 
 // Initialize Admin Credentials with bcrypt hashing if missing
 function getAdminCredentials() {
@@ -41,6 +71,83 @@ function getAdminCredentials() {
 }
 
 getAdminCredentials();
+
+const SHOP_ITEMS_FILE = path.join(__dirname, 'shop_items.json');
+const PORTFOLIO_ITEMS_FILE = path.join(__dirname, 'portfolio_items.json');
+
+// Initialize Shop and Portfolio data files with full catalog
+function initShopAndPortfolioDatabase() {
+  const titles = `Himalayan Dawn.Annapurna Sunset.Kathmandu Streets.Machhapuchhre Reflection.Monk in Meditation.Boudhanath Stupa.Patan Durbar Square.Everest Base Camp.Rhododendron Bloom.Yak Caravan.Bhaktapur Alley.Prayer Flags in the Wind.Gosaikunda Lake.Phewa Lake Morning.Gurung Village.Swayambhunath Monkeys.Thamel Nights.Mustang Valley.Tilicho Lake.Lumbini Peace.Newari Carver.Festival Colors.Dashain Kite.Tihar Lights.Himalayan Blue Sheep.Snow Leopard Spirit.Red Panda Resting.Namche Bazaar.Tengboche Monastery.Gokyo Ri View.Sherpa Guide.Porters on the Trail.Mardi Himal Trek.Langtang Valley.Kanchenjunga Sunrise.Manaslu Circuit.Upper Dolpo Beauty.Rara Lake Serenity.Chitwan Rhino.Bengal Tiger Prowl.Mountain Flight.Pashupatinath Sadhus.Ghats of Bagmati.Nyatapola Temple.Kumari Living Goddess.Indra Jatra Chariot.Bisket Jatra.Holi Celebrations.Teej Dancers.Himalayan Monal`.split('.');
+  const mediums = ['Oil on Canvas', 'Watercolor', 'Acrylic on Canvas', 'Mixed Media', 'Ink on Paper'];
+  const sizes = ['24" × 36"', '18" × 24"', '36" × 48"', '12" × 16"', '30" × 30"'];
+  const categories = ['landscape', 'portrait', 'abstract', 'nature', 'people', 'animals', 'mountains'];
+  const artists = ['Suman Wagle', 'Suman Wagle', 'Suman Wagle', 'Suman Maharjan', 'Elena Rostova', 'Tenzin Norbu'];
+
+  let existingPortfolio = [];
+  if (fs.existsSync(PORTFOLIO_ITEMS_FILE)) {
+    try { existingPortfolio = JSON.parse(fs.readFileSync(PORTFOLIO_ITEMS_FILE, 'utf8')); } catch (e) {}
+  }
+  if (!existingPortfolio || existingPortfolio.length <= 1) {
+    const defaultPortfolio = [];
+    for (let i = 0; i < 50; i++) {
+      const title = titles[i % titles.length] + (i > 49 ? ` Study ${i}` : '');
+      const medium = mediums[i % mediums.length];
+      const size = sizes[i % sizes.length];
+      const year = 2019 + (i % 6);
+      const price = 150 + ((i * 45) % 2850);
+      const category = categories[i % categories.length];
+      const artist = artists[i % artists.length];
+      const img = `/photos/paintings-of-nepal-${(i % 18) + 1}.jpg`;
+      defaultPortfolio.push({
+        id: i + 1,
+        title,
+        artist,
+        category,
+        medium,
+        technique: medium,
+        year,
+        dimensions: size,
+        price,
+        available: i % 7 !== 0,
+        featured: i % 9 === 0,
+        image: img,
+        description: `A stunning ${category} masterpiece representing "${title}". Created in ${year} by ${artist} using ${medium}.`
+      });
+    }
+    const combined = [...existingPortfolio, ...defaultPortfolio];
+    fs.writeFileSync(PORTFOLIO_ITEMS_FILE, JSON.stringify(combined, null, 2));
+  }
+
+  let existingShop = [];
+  if (fs.existsSync(SHOP_ITEMS_FILE)) {
+    try { existingShop = JSON.parse(fs.readFileSync(SHOP_ITEMS_FILE, 'utf8')); } catch (e) {}
+  }
+  if (!existingShop || existingShop.length <= 1) {
+    let portfolioData = [];
+    try { portfolioData = JSON.parse(fs.readFileSync(PORTFOLIO_ITEMS_FILE, 'utf8')); } catch (e) {}
+    const defaultShop = portfolioData.map((p, idx) => {
+      const onSale = idx % 5 === 0;
+      const origPrice = onSale ? p.price + 100 + idx * 10 : p.price;
+      return {
+        id: p.id,
+        title: p.title,
+        price: p.price,
+        originalPrice: origPrice,
+        onSale,
+        category: p.category,
+        medium: p.medium,
+        dimensions: p.dimensions,
+        image: `/photos/paintings-of-nepal-${((p.id - 1) % 18) + 1}.jpg`,
+        description: `Bring home this exquisite original piece, "${p.title}". Perfectly crafted to elevate your living space.`,
+        inStock: p.available !== false
+      };
+    });
+    const combinedShop = [...existingShop, ...defaultShop];
+    fs.writeFileSync(SHOP_ITEMS_FILE, JSON.stringify(combinedShop, null, 2));
+  }
+}
+
+initShopAndPortfolioDatabase();
 
 // Audit Logger
 function logAuditAction(action, user = 'admin', details = {}, ip = '') {
@@ -692,9 +799,17 @@ app.post('/api/admin/orders/:id/email', async (req, res) => {
   }
 });
 
-// 4. Add new Shop Item
-app.post('/api/admin/shop', (req, res) => {
+// 4. Add new Shop Item (with image upload)
+app.post('/api/admin/shop', upload.single('image'), (req, res) => {
   const shopLogFile = path.join(__dirname, 'shop_items.json');
+  
+  let imagePath = '/photos/paintings-of-nepal-1.jpg';
+  if (req.file) {
+    imagePath = '/photos/uploads/' + req.file.filename;
+  } else if (req.body.image) {
+    imagePath = sanitizeInput(req.body.image);
+  }
+
   const newItem = {
     id: Date.now(),
     title: sanitizeInput(req.body.title),
@@ -703,9 +818,9 @@ app.post('/api/admin/shop', (req, res) => {
     category: sanitizeInput(req.body.category) || 'original',
     medium: sanitizeInput(req.body.medium) || 'Oil on Canvas',
     dimensions: sanitizeInput(req.body.dimensions) || '24" x 36"',
-    image: sanitizeInput(req.body.image) || '/photos/paintings-of-nepal-1.jpg',
+    image: imagePath,
     description: sanitizeInput(req.body.description) || '',
-    inStock: req.body.inStock !== false
+    inStock: req.body.inStock !== 'false'
   };
 
   try {
@@ -723,9 +838,17 @@ app.post('/api/admin/shop', (req, res) => {
   }
 });
 
-// 5. Add new Portfolio Item
-app.post('/api/admin/portfolio', (req, res) => {
+// 5. Add new Portfolio Item (with image upload)
+app.post('/api/admin/portfolio', upload.single('image'), (req, res) => {
   const portfolioLogFile = path.join(__dirname, 'portfolio_items.json');
+
+  let imagePath = '/photos/paintings-of-nepal-2.jpg';
+  if (req.file) {
+    imagePath = '/photos/uploads/' + req.file.filename;
+  } else if (req.body.image) {
+    imagePath = sanitizeInput(req.body.image);
+  }
+
   const newItem = {
     id: Date.now(),
     title: sanitizeInput(req.body.title),
@@ -734,8 +857,8 @@ app.post('/api/admin/portfolio', (req, res) => {
     year: parseInt(req.body.year) || new Date().getFullYear(),
     dimensions: sanitizeInput(req.body.dimensions) || '24" x 36"',
     price: parseFloat(req.body.price) || 0,
-    available: req.body.available !== false,
-    image: sanitizeInput(req.body.image) || '/photos/paintings-of-nepal-2.jpg',
+    available: req.body.available !== 'false',
+    image: imagePath,
     description: sanitizeInput(req.body.description) || ''
   };
 
@@ -751,6 +874,238 @@ app.post('/api/admin/portfolio', (req, res) => {
   } catch (err) {
     console.error('Failed to save portfolio item:', err);
     res.status(500).json({ error: 'Failed to save portfolio item' });
+  }
+});
+
+// Public: Get custom Shop items
+app.get('/api/shop', (req, res) => {
+  const shopLogFile = path.join(__dirname, 'shop_items.json');
+  try {
+    let items = [];
+    if (fs.existsSync(shopLogFile)) {
+      items = JSON.parse(fs.readFileSync(shopLogFile, 'utf8'));
+    }
+    res.json({ success: true, items });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load shop items' });
+  }
+});
+
+// Public: Get custom Portfolio items
+app.get('/api/portfolio', (req, res) => {
+  const portfolioLogFile = path.join(__dirname, 'portfolio_items.json');
+  try {
+    let items = [];
+    if (fs.existsSync(portfolioLogFile)) {
+      items = JSON.parse(fs.readFileSync(portfolioLogFile, 'utf8'));
+    }
+    res.json({ success: true, items });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load portfolio items' });
+  }
+});
+
+// Admin: Delete Shop item
+app.delete('/api/admin/shop/:id', (req, res) => {
+  const shopLogFile = path.join(__dirname, 'shop_items.json');
+  const id = req.params.id;
+  try {
+    let items = [];
+    if (fs.existsSync(shopLogFile)) {
+      items = JSON.parse(fs.readFileSync(shopLogFile, 'utf8'));
+    }
+    items = items.filter(item => String(item.id) !== String(id));
+    fs.writeFileSync(shopLogFile, JSON.stringify(items, null, 2));
+    res.json({ success: true, message: 'Shop item deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete shop item' });
+  }
+});
+
+// Admin: Delete Portfolio item
+app.delete('/api/admin/portfolio/:id', (req, res) => {
+  const portfolioLogFile = path.join(__dirname, 'portfolio_items.json');
+  const id = req.params.id;
+  try {
+    let items = [];
+    if (fs.existsSync(portfolioLogFile)) {
+      items = JSON.parse(fs.readFileSync(portfolioLogFile, 'utf8'));
+    }
+    items = items.filter(item => String(item.id) !== String(id));
+    fs.writeFileSync(portfolioLogFile, JSON.stringify(items, null, 2));
+    res.json({ success: true, message: 'Portfolio item deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete portfolio item' });
+  }
+});
+
+// Admin: Upload Image (for blogs, drag & drop, etc.)
+app.post('/api/admin/upload', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded.' });
+  }
+  const fileUrl = '/photos/uploads/' + req.file.filename;
+  res.json({ success: true, url: fileUrl, filename: req.file.filename });
+});
+
+// --------------------------------------------------------------------------
+// CONTACT MESSAGES API
+// --------------------------------------------------------------------------
+
+// Public: Submit contact message
+app.post('/api/contact', (req, res) => {
+  const { name, email, phone, subject, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Name, email, and message are required.' });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Please provide a valid email address.' });
+  }
+
+  const msgEntry = {
+    id: 'MSG-' + crypto.randomBytes(4).toString('hex').toUpperCase(),
+    name: sanitizeInput(name),
+    email: sanitizeInput(email),
+    phone: sanitizeInput(phone || ''),
+    subject: sanitizeInput(subject || 'General Inquiry'),
+    message: sanitizeInput(message),
+    status: 'Unread',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    let messages = [];
+    if (fs.existsSync(CONTACT_MESSAGES_FILE)) {
+      messages = JSON.parse(fs.readFileSync(CONTACT_MESSAGES_FILE, 'utf8'));
+    }
+    messages.unshift(msgEntry);
+    fs.writeFileSync(CONTACT_MESSAGES_FILE, JSON.stringify(messages, null, 2));
+
+    res.json({ success: true, message: 'Your message has been sent successfully! We will get back to you shortly.' });
+  } catch (err) {
+    console.error('Failed to save contact message:', err);
+    res.status(500).json({ error: 'Failed to send message. Please try again.' });
+  }
+});
+
+// Admin: Get all contact messages
+app.get('/api/admin/messages', (req, res) => {
+  try {
+    let messages = [];
+    if (fs.existsSync(CONTACT_MESSAGES_FILE)) {
+      messages = JSON.parse(fs.readFileSync(CONTACT_MESSAGES_FILE, 'utf8'));
+    }
+    res.json({ success: true, messages });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load messages' });
+  }
+});
+
+// Admin: Update message status
+app.post('/api/admin/messages/:id/status', (req, res) => {
+  const msgId = req.params.id;
+  const { status } = req.body;
+
+  try {
+    let messages = [];
+    if (fs.existsSync(CONTACT_MESSAGES_FILE)) {
+      messages = JSON.parse(fs.readFileSync(CONTACT_MESSAGES_FILE, 'utf8'));
+    }
+    const idx = messages.findIndex(m => m.id === msgId);
+    if (idx === -1) return res.status(404).json({ error: 'Message not found' });
+
+    messages[idx].status = status || 'Read';
+    messages[idx].updatedAt = new Date().toISOString();
+    fs.writeFileSync(CONTACT_MESSAGES_FILE, JSON.stringify(messages, null, 2));
+
+    res.json({ success: true, message: `Message status updated to ${messages[idx].status}` });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update message status' });
+  }
+});
+
+// --------------------------------------------------------------------------
+// WORKSHOP BOOKINGS API
+// --------------------------------------------------------------------------
+
+// Public: Submit workshop booking
+app.post('/api/workshop', (req, res) => {
+  const { name, email, phone, type, people, date, time, requests } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name and email are required.' });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Please provide a valid email address.' });
+  }
+
+  const booking = {
+    id: 'WK-' + crypto.randomBytes(4).toString('hex').toUpperCase(),
+    name: sanitizeInput(name),
+    email: sanitizeInput(email),
+    phone: sanitizeInput(phone || ''),
+    type: sanitizeInput(type || 'Solo'),
+    people: parseInt(people) || 1,
+    date: sanitizeInput(date || ''),
+    time: sanitizeInput(time || ''),
+    requests: sanitizeInput(requests || ''),
+    status: 'Pending',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    let bookings = [];
+    if (fs.existsSync(WORKSHOP_BOOKINGS_FILE)) {
+      bookings = JSON.parse(fs.readFileSync(WORKSHOP_BOOKINGS_FILE, 'utf8'));
+    }
+    bookings.unshift(booking);
+    fs.writeFileSync(WORKSHOP_BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+
+    res.json({ success: true, message: 'Workshop booked successfully! We will contact you soon.', booking });
+  } catch (err) {
+    console.error('Failed to save workshop booking:', err);
+    res.status(500).json({ error: 'Failed to book workshop. Please try again.' });
+  }
+});
+
+// Admin: Get all workshop bookings
+app.get('/api/admin/workshops', (req, res) => {
+  try {
+    let bookings = [];
+    if (fs.existsSync(WORKSHOP_BOOKINGS_FILE)) {
+      bookings = JSON.parse(fs.readFileSync(WORKSHOP_BOOKINGS_FILE, 'utf8'));
+    }
+    res.json({ success: true, bookings });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load workshop bookings' });
+  }
+});
+
+// Admin: Update booking status
+app.post('/api/admin/workshops/:id/status', (req, res) => {
+  const bookingId = req.params.id;
+  const { status } = req.body;
+
+  try {
+    let bookings = [];
+    if (fs.existsSync(WORKSHOP_BOOKINGS_FILE)) {
+      bookings = JSON.parse(fs.readFileSync(WORKSHOP_BOOKINGS_FILE, 'utf8'));
+    }
+    const idx = bookings.findIndex(b => b.id === bookingId);
+    if (idx === -1) return res.status(404).json({ error: 'Booking not found' });
+
+    bookings[idx].status = status || 'Confirmed';
+    bookings[idx].updatedAt = new Date().toISOString();
+    fs.writeFileSync(WORKSHOP_BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+
+    res.json({ success: true, message: `Booking status updated to ${bookings[idx].status}` });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update booking status' });
   }
 });
 
@@ -885,7 +1240,7 @@ app.put('/api/admin/blogs/:id', (req, res) => {
 
 // 11. Admin Delete Blog Post
 app.delete('/api/admin/blogs/:id', (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
   const blogsFile = path.join(__dirname, 'blogs_log.json');
 
   try {
@@ -893,7 +1248,7 @@ app.delete('/api/admin/blogs/:id', (req, res) => {
     if (fs.existsSync(blogsFile)) {
       blogs = JSON.parse(fs.readFileSync(blogsFile, 'utf8'));
     }
-    blogs = blogs.filter(b => b.id !== id);
+    blogs = blogs.filter(b => String(b.id) !== String(id));
     fs.writeFileSync(blogsFile, JSON.stringify(blogs, null, 2));
     res.json({ success: true, message: 'Blog post deleted successfully' });
   } catch (err) {

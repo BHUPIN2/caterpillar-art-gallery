@@ -292,6 +292,34 @@ function init() {
   lightboxNext && lightboxNext.addEventListener("click", (e) => { e.stopPropagation(); nextSlide(); });
   lightbox && lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
 
+  fetch('/api/portfolio').then(r=>r.json()).then(data=>{
+    if(data.success && Array.isArray(data.items) && data.items.length > 0){
+      let custom = data.items.map(item => ({
+        id: item.id,
+        title: item.title,
+        artist: item.artist || 'Suman Wagle',
+        medium: item.technique || item.medium || 'Oil on Canvas',
+        technique: item.technique || item.medium || 'Oil on Canvas',
+        size: item.dimensions || '24" x 36"',
+        dimensions: item.dimensions || '24" x 36"',
+        year: item.year || new Date().getFullYear(),
+        price: item.price || 0,
+        category: (item.category || 'landscape').toLowerCase(),
+        orientation: 'landscape',
+        available: item.available !== false,
+        featured: true,
+        description: item.description || `Original masterpiece "${item.title}".`,
+        image: item.image || '/photos/paintings-of-nepal-2.jpg',
+        tags: [item.category || 'nepal', 'art', 'himalaya']
+      }));
+      let existingIds = new Set(custom.map(c => c.id));
+      let defaults = paintingsList.filter(d => !existingIds.has(d.id));
+      paintingsList.length = 0;
+      paintingsList.push(...custom, ...defaults);
+      applyFilters();
+    }
+  }).catch(()=>{});
+
   applyFilters();
 }
 
